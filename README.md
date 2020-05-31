@@ -1,5 +1,5 @@
 # SSL-certificates
-The repository depicts a process to create a custom root certification authority, using it to sign a self-created SSL server certificate with SAN extension support 
+The repository depicts a process to create a custom root certification authority, using it to sign a self-created SSL server certificate with SAN extension support. 
 
 # Why a Root CA
 When we're planning to create SSL certificates using the OpenSSL library, it is very important to create a root CA and get the self-created certificates signed from it. Below lies some of the reasons why we must have a root CA - 
@@ -29,14 +29,15 @@ This extension provides support for multiple domain names, IP addresses, etc for
            
 -> Run the script "ssl-certificates.sh" with a root user.
            
-# Issues
-If you confront any library related issues while creating the certificates, try upgrading the OpenSSL library to the version 1.1.1d
-
-
 # Security
 We've to make sure that the private key files should not be accessed by anyone. If a hacker gets access to the same, then we've to compromise the security. In order to avoid the same, we've set 400 permission to the key files. This means that only the owner(in our case 'root') of the files can access these files with read-only permissions. Anyhow, please note that this solution cannot guarantee complete security. The best way to procure the same is by using software like Hashicorp Vault to store sensitive data like private keys, certificates, etc.
 
+# Issues
+If you confront the below issue while creating the certificates, try upgrading the OpenSSL library to the version 1.1.1d
 
+     - "random number generator:RAND_load_file:Cannot open file:../crypto/rand/randfile.c:88:Filename=/home/ubuntu/.rnd"
 
+# Testing
+The script is tested on an AWS cloud EC2 instance created from the AMI - ubuntu-bionic-18.04-amd64-server-20200408
 
 
