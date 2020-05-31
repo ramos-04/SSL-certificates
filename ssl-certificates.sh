@@ -70,7 +70,7 @@
 	
 	# Create a certificate signing request(CSR) for the server certificate
 	echo "Creating a certificate signing request(CSR) for the server certificate"
-	openssl req -new -key $SERVER_DIRECTORY/application.key -out -extensions v3_req -sha256 -subj "/CN=django-server" $SERVER_DIRECTORY/application.csr 
+	openssl req -new -key $SERVER_DIRECTORY/server.key -extensions v3_req -sha256 -subj "/CN=django-server" -out $SERVER_DIRECTORY/server.csr
 
         if [ $? -eq 0 ]; then
 		echo "CSR for the server certificate has been created successfully"
@@ -81,7 +81,7 @@
 	
 	# Sign the server certificate with the root CA key
 	echo "Signing the server certificate with the root CA key"
-	openssl x509 -req -in $SERVER_DIRECTORY/application.csr -CA $ROOT_DIRECTORY/root-ca.crt -CAkey $ROOT_DIRECTORY/root-ca.key -extensions v3_req -sha256 -CAcreateserial -days $EXPIRY_DAYS -out $SERVER_DIRECTORY/application.crt -extfile $CONFIG_FILE
+	openssl x509 -req -in $SERVER_DIRECTORY/server.csr -CA $ROOT_DIRECTORY/root-ca.crt -CAkey $ROOT_DIRECTORY/root-ca.key -extensions v3_req -sha256 -CAcreateserial -days $EXPIRY_DAYS -out $SERVER_DIRECTORY/server.crt -extfile $CONFIG_FILE
 
 	if [ $? -eq 0 ]; then
 		echo "The server certificate has been successfully signed with the root CA key"
@@ -91,10 +91,10 @@
 	fi
 
 	# Delete the unnecessary files
-	rm -f $SERVER_DIRECTORY/application.csr
+	rm -f $SERVER_DIRECTORY/server.csr
 
         # Setting readonly permissions to the key files
-        chmod 400 $SERVER_DIRECTORY/application.key
+        chmod 400 $SERVER_DIRECTORY/server.key
         chmod 400 $ROOT_DIRECTORY/root-ca.pem $ROOT_DIRECTORY/root-ca.key
 
 
